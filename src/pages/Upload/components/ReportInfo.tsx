@@ -1,5 +1,5 @@
 import { FaRegCalendarAlt, FaRegUserCircle } from "react-icons/fa";
-import type { IProfileData } from "../../../shared/hooks/useProfile";
+import type { IProfileData } from "../../Profile/types";
 import { findDepartment, findPosition } from "../../../shared/config/constants";
 
 interface ReportInfoProps {

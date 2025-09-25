@@ -23,7 +23,7 @@ export default function Section() {
   const { sectionId } = useParams();
   const { data, isLoading } = useQuery<IAreaData>({
     queryKey: ["section", sectionId],
-    queryFn: async () => (await api.get(`api/areas/${sectionId}`)).data,
+    queryFn: async () => (await api.get(`sites/${sectionId}`)).data,
   });
 
   console.log(data);

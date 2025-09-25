@@ -20,7 +20,7 @@ export default function AreaImageUpload() {
       <h3 className="text-lg font-semibold text-gray-800 mb-4">구역 이미지</h3>
       <div 
         onClick={handleImageClick}
-        className={`w-full h-80 bg-gray-200 rounded-2xl flex items-center justify-center transition-colors relative overflow-hidden ${
+        className={`group w-full h-80 bg-gray-200 rounded-2xl flex items-center justify-center transition-colors relative overflow-hidden ${
           isSaving 
             ? 'cursor-not-allowed opacity-50' 
             : 'cursor-pointer hover:bg-gray-300'
@@ -40,9 +40,9 @@ export default function AreaImageUpload() {
             />
             {/* 이미지 위에 편집 아이콘 오버레이 */}
             {!isSaving && (
-              <div className="absolute inset-0 bg-black bg-opacity-0 hover:bg-opacity-30 transition-all flex items-center justify-center">
-                <div className="opacity-0 hover:opacity-100 transition-opacity">
-                  <LuCirclePlus className="w-12 h-12 text-white" />
+              <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-all flex items-center justify-center">
+                <div className="transition-opacity">
+                  <LuCirclePlus className="w-24 h-24 text-orange-500" />
                 </div>
               </div>
             )}

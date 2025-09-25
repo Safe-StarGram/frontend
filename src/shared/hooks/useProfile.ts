@@ -8,7 +8,7 @@ export const useProfile = () => {
   const { data, isLoading } = useQuery({
     queryKey: ["profile"],
     queryFn: async () => {
-      const res = await api.get("profile/me");
+      const res = await api.get("/auth/profile");
       return res.data;
     },
   });
@@ -27,7 +27,7 @@ export const useProfile = () => {
 
   const mutation = useMutation({
     mutationFn: async (formData: FormData) => {
-      return await api.patch("profile/me", formData, {
+      return await api.patch("/auth/profile", formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
     },

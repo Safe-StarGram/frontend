@@ -5,7 +5,7 @@ import type { IArea } from "../../pages/Upload/types";
 export const useArea = () => {
   const { data: areas, isLoading } = useQuery<IArea[]>({
     queryKey: ["areas"],
-    queryFn: async () => (await api.get("api/areas/read")).data,
+    queryFn: async () => (await api.get("sites")).data,
   });
   return { areas, isLoading };
 };

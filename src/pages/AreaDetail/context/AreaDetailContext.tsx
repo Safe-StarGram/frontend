@@ -69,7 +69,10 @@ export function AreaDetailProvider({ children }: AreaDetailProviderProps) {
     if (area) {
       setAreaNameState(area.areaName);
       setSubAreas(area.subAreas || []);
-      setCurrentImageUrl(area.imageUrl);
+      if (area.imageUrl) {
+        const baseUrl = import.meta.env.VITE_API_BASE_URL;
+        setCurrentImageUrl(`${baseUrl}${area.imageUrl}`);
+      }
     }
   }, [area]);
 

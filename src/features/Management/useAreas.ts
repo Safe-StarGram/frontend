@@ -22,7 +22,9 @@ export const useAreas = () => {
     queryKey: ["areas", !!accessToken],
     queryFn: async (): Promise<ManagementArea[]> => {
       try {
-        const res = await api.get("api/areas/read");
+        const res = await api.get("sites");
+        console.log("API Response from sites:", res);
+        console.log("Response data:", res.data);
         return res.data;
       } catch (err: any) {
         // JWT 서명 오류 또는 401 에러 시 토큰 초기화

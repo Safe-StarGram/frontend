@@ -19,26 +19,26 @@ export function useAddArea() {
   return useMutation({
     mutationFn: async (data: AddAreaData) => {
       const formData = new FormData();
-      
+
       // areaName 추가
       formData.append("areaName", data.areaName);
-      
+
       // subAreaNames 추가 (중복 키로 여러 개 추가)
       data.subAreas.forEach((subArea) => {
         formData.append("subAreaNames", subArea.name);
       });
-      
+
       // image 추가 (있는 경우에만)
       if (data.image) {
         formData.append("image", data.image);
       }
 
-      const res = await api.post("api/areas", formData, {
+      const res = await api.post("sites", formData, {
         headers: {
-          'Content-Type': 'multipart/form-data',
+          "Content-Type": "multipart/form-data",
         },
       });
-      console.log(data) 
+      console.log(data);
       return res.data;
     },
     onSuccess: () => {

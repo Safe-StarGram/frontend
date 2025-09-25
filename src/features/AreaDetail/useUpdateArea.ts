@@ -27,23 +27,23 @@ export const useUpdateArea = () => {
     mutationFn: async (data: UpdateAreaData) => {
       try {
         const formData = new FormData();
-        
+
         // 소구역 이름들을 개별적으로 추가 (subAreaNames)
-        data.subAreas.forEach(subArea => {
-          formData.append('subAreaNames', subArea.name);
+        data.subAreas.forEach((subArea) => {
+          formData.append("subAreaNames", subArea.name);
         });
-        
+
         // 이미지가 있으면 추가
         if (data.image) {
-          formData.append('image', data.image);
+          formData.append("image", data.image);
         }
 
-        const res = await api.put(`api/areas/${data.areaId}`, formData, {
+        const res = await api.put(`sites/${data.areaId}`, formData, {
           headers: {
-            'Content-Type': 'multipart/form-data',
+            "Content-Type": "multipart/form-data",
           },
         });
-        
+
         return res.data;
       } catch (err: any) {
         // JWT 서명 오류 또는 401 에러 시 토큰 초기화
@@ -55,7 +55,9 @@ export const useUpdateArea = () => {
     },
     onSuccess: (_, variables) => {
       // 관련 쿼리 무효화하여 데이터 새로고침
-      queryClient.invalidateQueries({ queryKey: ["area-detail", variables.areaId] });
+      queryClient.invalidateQueries({
+        queryKey: ["area-detail", variables.areaId],
+      });
       queryClient.invalidateQueries({ queryKey: ["areas"] });
     },
   });

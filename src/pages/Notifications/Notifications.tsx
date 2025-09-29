@@ -15,6 +15,7 @@ export default function Notifications() {
     isFetchingNextPage,
   } = useInfinitePost();
 
+
   // 스크롤이 끝에 도달하면 fetchNextPage를 호출
   const loadMoreRef = useRef<HTMLDivElement | null>(null);
 
@@ -57,6 +58,10 @@ export default function Notifications() {
           </div>
         ) : isError ? (
           <div>데이터를 불러오는 중 오류가 발생했습니다.</div>
+        ) : data?.pages[0]?.length === 0 ? (
+          <div className="text-center mt-10 text-gray-500">
+            최근 알림이 없습니다.
+          </div>
         ) : (
           data?.pages.map((page, index) => (
             <div key={index} className="flex flex-col gap-3">
@@ -67,8 +72,8 @@ export default function Notifications() {
                   title={noti.title}
                   upperArea={noti.areaId}
                   lowerArea={noti.subAreaId}
-                  uploadTime={changeTimeForm(noti.createdAt)}
-                  score={Number(noti.reporterRisk)}
+                  uploadTime={noti.createdAt ? changeTimeForm(noti.createdAt) : undefined}
+                  score={noti.reporterRisk ? Number(noti.reporterRisk) : undefined}
                   photoUrl={noti.postPhotoUrl}
                 />
               ))}

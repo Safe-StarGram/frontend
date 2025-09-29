@@ -2,7 +2,7 @@ import { useMutation } from "@tanstack/react-query";
 import api from "../api/axiosInstance";
 import { useDispatch } from "react-redux";
 import { setAccessToken } from "../../store/authSlice";
-import { setUserId } from "../../store/userSlice";
+import { setUserId, setUserRole } from "../../store/userSlice";
 import { useNavigate } from "react-router";
 
 interface LoginData {
@@ -22,6 +22,7 @@ export function useLogin() {
     onSuccess: (data) => {
       dispatch(setAccessToken(data.accessToken));
       dispatch(setUserId(data.userId));
+      dispatch(setUserRole(data.role));
       navigate("/");
     },
     onError: (error: any) => {

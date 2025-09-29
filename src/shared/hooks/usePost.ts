@@ -16,7 +16,7 @@ const uploadPost = async (data: IUploadData) => {
   formData.append("content", data.content);
   formData.append("reporterRisk", data.reporterRisk);
 
-  const response = await api.post("api/posts", formData, {
+  const response = await api.post("notices", formData, {
     headers: { "Content-Type": "multipart/form-data" },
   });
 
@@ -29,7 +29,7 @@ export const usePost = () => {
 
   const { data: posts, isLoading } = useQuery<INotification[]>({
     queryKey: ["posts"],
-    queryFn: async () => (await api.get("posts")).data,
+    queryFn: async () => ((await api.get("notices")).data.content || []),
   });
 
   const uploadMutation = useMutation({

@@ -4,7 +4,7 @@ import api from "../api/axiosInstance";
 export const useComments = (postId: string) => {
   const { data: comments, isLoading } = useQuery({
     queryKey: ["comments", postId],
-    queryFn: async () => (await api.get(`api/comment/${postId}`)).data,
+    queryFn: async () => (await api.get(`feedbacks/${postId}`)).data,
   });
 
   return { comments, isLoading };
@@ -15,7 +15,7 @@ export const useAddComment = (postId: string) => {
 
   return useMutation({
     mutationFn: async (message: string) =>
-      (await api.post("api/comment", { postId: Number(postId), message })).data,
+      (await api.post("feedbacks", { postId: Number(postId), message })).data,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["comments", postId] });
     },
@@ -27,7 +27,7 @@ export const useDeleteComment = (postId: string) => {
 
   return useMutation({
     mutationFn: async (commentId: number) =>
-      await api.delete(`/api/comment/delete/${commentId}`),
+      await api.delete(`/feedbacks/delete/${commentId}`),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["comments", postId] });
     },
@@ -45,7 +45,7 @@ export const useEditComment = (postId: string) => {
       commentId: number;
       message: string;
     }) => {
-      return await api.patch(`/api/comment/modify/${commentId}`, { message });
+      return await api.patch(`/feedbacks/${commentId}`, { message });
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["comments", postId] });

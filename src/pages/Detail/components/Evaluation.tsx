@@ -1,5 +1,7 @@
 import { CiWarning } from "react-icons/ci";
 import { useForm } from "react-hook-form";
+import { useSelector } from "react-redux";
+import type { RootState } from "../../../store/store";
 import type { IProfileData } from "../../Profile/types";
 import { findScore, scores } from "../../../shared/config/constants";
 
@@ -10,10 +12,10 @@ interface IProps {
 
 export default function Evaluation({ score, profileData }: IProps) {
   const { register } = useForm();
-  console.log(profileData.position);
+  const userRole = useSelector((state: RootState) => state.user.role);
+  const isAdmin = userRole === "ROLE_ADMIN";
   const handleChange = async (e: React.ChangeEvent<HTMLSelectElement>) => {
     const value = e.target.value;
-    console.log(value);
     // try {
     //   await api.patch("위험성 평가 api");
     //   console.log("업데이트 성공:", value);
@@ -44,12 +46,7 @@ export default function Evaluation({ score, profileData }: IProps) {
               className="border rounded-md p-1 w-full flex-1 disabled:cursor-not-allowed disabled:bg-gray-200"
               {...register("score")}
               onChange={handleChange}
-              disabled={
-                !(
-                  Number(profileData.department) === 4 ||
-                  Number(profileData.department) === 6
-                )
-              }
+              disabled={!isAdmin}
             >
               {scores.map((score) => (
                 <option key={score.value} value={score.value}>

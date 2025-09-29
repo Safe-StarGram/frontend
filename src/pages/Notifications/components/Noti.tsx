@@ -4,13 +4,13 @@ import { IoLocationOutline, IoTimeOutline } from "react-icons/io5";
 import { useNavigate } from "react-router";
 
 interface IProps {
-  title: string;
-  upperArea: string;
-  lowerArea: string;
-  uploadTime: string;
-  score: number;
-  photoUrl: string;
-  postId: string;
+  title?: string;
+  upperArea: number;
+  lowerArea: number;
+  uploadTime?: string;
+  score?: number;
+  photoUrl?: string;
+  postId: number;
 }
 
 export default function Noti({
@@ -42,7 +42,7 @@ export default function Noti({
         />
       </div>
       <div className="flex flex-col flex-1">
-        <div className="text-xl font-bold mb-3">{title}</div>
+        <div className="text-xl font-bold mb-3">{title || '제목 없음'}</div>
         <div className="flex items-center gap-3">
           <IoLocationOutline className="text-blue-500" />
           <span className="text-gray-500">
@@ -51,11 +51,11 @@ export default function Noti({
         </div>
         <div className="flex items-center gap-3">
           <IoTimeOutline className="text-blue-500" />
-          <span className="text-gray-500">{uploadTime}</span>
+          <span className="text-gray-500">{uploadTime || '시간 정보 없음'}</span>
         </div>
         <div className="flex items-center gap-3">
           <CiWarning className="text-brand" />
-          <span className="text-gray-500">{score}점</span>
+          <span className="text-gray-500">{score || 0}점</span>
         </div>
       </div>
       <div className="flex items-center justify-center rounded-full p-1 hover:cursor-pointer">

@@ -1,10 +1,13 @@
 import { useForm } from "react-hook-form";
 import { IoMdCheckboxOutline } from "react-icons/io";
 import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import type { RootState } from "../../../store/store";
 import type { IActionForm, IDetailInfo } from "../types";
 import { findDepartment, findPosition } from "../../../shared/config/constants";
 import { changeTimeForm } from "../../../shared/hooks/useCurrentTime";
 import { useAction } from "../../../shared/hooks/useAction";
+import { useProfile } from "../../../shared/hooks/useProfile";
 
 interface IProps {
   postId: string;
@@ -13,6 +16,9 @@ interface IProps {
 
 export default function Action({ postId, detailInfo }: IProps) {
   const [currentDetail, setCurrentDetail] = useState<IDetailInfo>(detailInfo);
+  const { profileData } = useProfile();
+  const userRole = useSelector((state: RootState) => state.user.role);
+  const isAdmin = userRole === "ROLE_ADMIN";
 
   const { register, watch, setValue, getValues } = useForm<IActionForm>({
     defaultValues: {
@@ -53,19 +59,25 @@ export default function Action({ postId, detailInfo }: IProps) {
           <span>확인</span>
           <input type="hidden" {...register("isChecked")} />
           <IoMdCheckboxOutline
-            className={`w-8 h-8 hover:cursor-pointer ${
+            className={`w-8 h-8 ${
+              isAdmin 
+                ? "hover:cursor-pointer" 
+                : "cursor-not-allowed opacity-50"
+            } ${
               isChecked ? "text-blue-500" : "text-gray-400"
             }`}
-            onClick={() =>
-              handleToggle("isChecked", watch("isChecked") as number)
-            }
+            onClick={() => {
+              if (isAdmin) {
+                handleToggle("isChecked", watch("isChecked") as number);
+              }
+            }}
           />
           {isChecked && (
             <div>
               <div>
-                {currentDetail.checkerName} (
-                {findDepartment(String(currentDetail.checkerDepartment))}{" "}
-                {findPosition(String(currentDetail.checkerPosition))})
+                {profileData?.name || "사용자"} (
+                {findDepartment(profileData?.department || "0")}{" "}
+                {findPosition(profileData?.position || "0")})
               </div>
               <div className="text-sm text-gray-500">
                 {changeTimeForm(currentDetail.isCheckedAt)}
@@ -78,19 +90,25 @@ export default function Action({ postId, detailInfo }: IProps) {
           <span>조치</span>
           <input type="hidden" {...register("isActionTaken")} />
           <IoMdCheckboxOutline
-            className={`w-8 h-8 hover:cursor-pointer ${
+            className={`w-8 h-8 ${
+              isAdmin 
+                ? "hover:cursor-pointer" 
+                : "cursor-not-allowed opacity-50"
+            } ${
               isActionTaken ? "text-blue-500" : "text-gray-400"
             }`}
-            onClick={() =>
-              handleToggle("isActionTaken", watch("isActionTaken") as number)
-            }
+            onClick={() => {
+              if (isAdmin) {
+                handleToggle("isActionTaken", watch("isActionTaken") as number);
+              }
+            }}
           />
           {isActionTaken && (
             <div>
               <div>
-                {currentDetail.actionTakerName} (
-                {findDepartment(String(currentDetail.actionTakerDepartment))}{" "}
-                {findPosition(String(currentDetail.actionTakerPosition))})
+                {profileData?.name || "사용자"} (
+                {findDepartment(profileData?.department || "0")}{" "}
+                {findPosition(profileData?.position || "0")})
               </div>
               <div className="text-sm text-gray-500">
                 {changeTimeForm(currentDetail.isActionTakenAt)}

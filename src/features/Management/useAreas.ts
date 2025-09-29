@@ -3,7 +3,7 @@ import api from "../../shared/api/axiosInstance";
 import { useDispatch, useSelector } from "react-redux";
 import type { RootState } from "../../store/store";
 import { clearAccessToken } from "../../store/authSlice";
-import { clearUserId } from "../../store/userSlice";
+import { clearUserInfo } from "../../store/userSlice";
 import type { ManagementArea } from "../../pages/Management/types";
 
 export const useAreas = () => {
@@ -13,7 +13,7 @@ export const useAreas = () => {
   // JWT 서명 오류 해결을 위해 토큰 완전 초기화
   const clearTokenAndRedirect = () => {
     dispatch(clearAccessToken());
-    dispatch(clearUserId());
+    dispatch(clearUserInfo());
     localStorage.removeItem("persist:root");
     window.location.href = "/login";
   };
@@ -23,8 +23,6 @@ export const useAreas = () => {
     queryFn: async (): Promise<ManagementArea[]> => {
       try {
         const res = await api.get("sites");
-        console.log("API Response from sites:", res);
-        console.log("Response data:", res.data);
         return res.data;
       } catch (err: any) {
         // JWT 서명 오류 또는 401 에러 시 토큰 초기화

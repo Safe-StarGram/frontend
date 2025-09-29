@@ -5,7 +5,7 @@ import type { IActionForm, IDetailInfo } from "../../pages/Detail/types";
 export const useAction = (postId: string) => {
   return useMutation<IDetailInfo, unknown, IActionForm>({
     mutationFn: async (data: IActionForm) => {
-      const res = await api.patch(`api/posts/action-status/${postId}`, data);
+      const res = await api.patch(`notices/status/${postId}`, data);
       return res.data;
     },
   });

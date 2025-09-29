@@ -3,7 +3,7 @@ import api from "../../shared/api/axiosInstance";
 import { useDispatch, useSelector } from "react-redux";
 import type { RootState } from "../../store/store";
 import { clearAccessToken } from "../../store/authSlice";
-import { clearUserId } from "../../store/userSlice";
+import { clearUserInfo } from "../../store/userSlice";
 
 export const useManagerUsers = () => {
   const accessToken = useSelector((state: RootState) => state.auth.accessToken);
@@ -12,7 +12,7 @@ export const useManagerUsers = () => {
   // JWT 서명 오류 해결을 위해 토큰 완전 초기화
   const clearTokenAndRedirect = () => {
     dispatch(clearAccessToken());
-    dispatch(clearUserId());
+    dispatch(clearUserInfo());
     localStorage.removeItem("persist:root");
     window.location.href = "/login";
   };

@@ -7,23 +7,23 @@ const fetchNotifications = async ({
 }: {
   pageParam?: number;
 }) => {
-  const res = await api.get("/api/posts", {
+  const res = await api.get("/notices", {
     params: { page: pageParam, size: 5 },
   });
-  return res.data as INotification[];
+  return (res.data.content || res.data || []) as INotification[];
 };
 
 export const useInfinitePost = () => {
   return useInfiniteQuery<INotification[]>({
-    queryKey: ["posts"],
+    queryKey: ["posts", "infinite"],
     queryFn: ({ pageParam = 0 }) =>
       fetchNotifications({ pageParam: pageParam as number }),
     initialPageParam: 0,
     getNextPageParam: (lastPage, allPages) => {
-      if (lastPage.length === 5) {
-        return allPages.length; // 페이지 계속 증가
+      if (lastPage && lastPage.length === 5) {
+        return allPages.length;
       }
-      return null;
+      return undefined;
     },
   });
 };

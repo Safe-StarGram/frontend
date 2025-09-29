@@ -2,7 +2,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import api from "../../shared/api/axiosInstance";
 import { useDispatch } from "react-redux";
 import { clearAccessToken } from "../../store/authSlice";
-import { clearUserId } from "../../store/userSlice";
+import { clearUserInfo } from "../../store/userSlice";
 import type { SubArea } from "../../pages/Management/types";
 
 interface UpdateAreaData {
@@ -18,7 +18,7 @@ export const useUpdateArea = () => {
   // JWT 서명 오류 해결을 위해 토큰 완전 초기화
   const clearTokenAndRedirect = () => {
     dispatch(clearAccessToken());
-    dispatch(clearUserId());
+    dispatch(clearUserInfo());
     localStorage.removeItem("persist:root");
     window.location.href = "/login";
   };

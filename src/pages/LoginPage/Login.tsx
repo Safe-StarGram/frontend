@@ -6,7 +6,7 @@ import { useLogin } from "../../shared/hooks/useLogin";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { clearAccessToken } from "../../store/authSlice";
-import { clearUserId } from "../../store/userSlice";
+import { clearUserInfo } from "../../store/userSlice";
 
 interface FormData {
   email: string;
@@ -25,7 +25,7 @@ export default function Login() {
 
   useEffect(() => {
     dispatch(clearAccessToken());
-    dispatch(clearUserId());
+    dispatch(clearUserInfo());
   }, [dispatch]);
 
   return (

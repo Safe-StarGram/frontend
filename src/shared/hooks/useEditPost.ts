@@ -7,7 +7,7 @@ export const useEditPost = (postId: string, onClose: () => void) => {
 
   return useMutation({
     mutationFn: async (data: IForm) =>
-      (await api.patch(`api/posts/${postId}`, data)).data,
+      (await api.patch(`notices/${postId}`, data)).data,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["detail", { postId }] });
       onClose();

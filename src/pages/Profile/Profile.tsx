@@ -1,14 +1,20 @@
 import Layout from "../../shared/layout/Layout";
 import Button from "../../shared/layout/Button";
 import { useProfile } from "../../shared/hooks/useProfile";
+import { useLogout } from "../../shared/hooks/useLogout";
 import { useEffect, useRef } from "react";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router";
+import { useSelector } from "react-redux";
+import type { RootState } from "../../store/store";
 import ProfileForm from "./components/ProfileForm";
 import type { IProfileData } from "./types";
 
 export default function Profile() {
   const navigate = useNavigate();
+  const userRole = useSelector((state: RootState) => state.user.role);
+  const isAdmin = userRole === "ROLE_ADMIN";
+  
   const {
     profileData,
     isLoading: queryLoading,
@@ -17,6 +23,8 @@ export default function Profile() {
     isSuccess: mutationSuccess,
     isPending: mutationLoading,
   } = useProfile();
+
+  const { mutate: logout, isPending: isLogoutPending } = useLogout();
 
   // 저장 중인지 추적하는 ref
   const isSaving = useRef(false);
@@ -65,24 +73,41 @@ export default function Profile() {
     formData.append("radioNumber", String(data.radio));
     formData.append("department", data.department);
     formData.append("position", data.position);
-    if (data.image) {
-      formData.append("file", data.image);
+    if (data.image && data.image instanceof File) {
+      formData.append("image", data.image);
     }
     isSaving.current = true;
     mutate(formData);
   };
 
+  const handleLogout = () => {
+    if (confirm("로그아웃 하시겠습니까?")) {
+      logout();
+    }
+  };
+
   return (
     <Layout title="프로파일" showBackButton={false} activeTab="profile">
       <ProfileForm defaultValues={profileData} onSubmit={handleSubmit} />
+      {isAdmin && (
+        <Button
+          disabled={mutationLoading}
+          className="rounded-2xl w-full mb-3"
+          baseColor="black"
+          hoverColor="black"
+          onClick={() => navigate("/management")}
+        >
+          현장 관리
+        </Button>
+      )}
       <Button
-        disabled={mutationLoading}
+        disabled={isLogoutPending}
         className="rounded-2xl w-full"
-        baseColor="black"
-        hoverColor="black"
-        onClick={() => navigate("/management")}
+        baseColor="red"
+        hoverColor="red"
+        onClick={handleLogout}
       >
-        현장 관리
+        {isLogoutPending ? "로그아웃 중..." : "로그아웃"}
       </Button>
     </Layout>
   );

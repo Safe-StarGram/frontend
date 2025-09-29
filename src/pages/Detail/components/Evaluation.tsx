@@ -4,24 +4,33 @@ import { useSelector } from "react-redux";
 import type { RootState } from "../../../store/store";
 import type { IProfileData } from "../../Profile/types";
 import { findScore, scores } from "../../../shared/config/constants";
+import { useCheckAction } from "../../../shared/hooks/useCheckAction";
 
 interface IProps {
-  score: number;
+  reporterScore: string | null;
+  managerScore: string | null;
   profileData: IProfileData;
+  postId: string;
+  currentData: any; // IDetailInfo 타입
 }
 
-export default function Evaluation({ score, profileData }: IProps) {
+export default function Evaluation({ reporterScore, managerScore, profileData, postId, currentData }: IProps) {
   const { register } = useForm();
   const userRole = useSelector((state: RootState) => state.user.role);
   const isAdmin = userRole === "ROLE_ADMIN";
+  const { checkAction, isPending } = useCheckAction();
+  
   const handleChange = async (e: React.ChangeEvent<HTMLSelectElement>) => {
     const value = e.target.value;
-    // try {
-    //   await api.patch("위험성 평가 api");
-    //   console.log("업데이트 성공:", value);
-    // } catch (err) {
-    //   console.error("업데이트 실패:", err);
-    // }
+    if (value && profileData?.userId) {
+      checkAction({
+        postId: Number(postId),
+        actionType: 'managerRisk',
+        userId: profileData.userId,
+        currentData: currentData,
+        managerRisk: value
+      });
+    }
   };
 
   return (
@@ -33,7 +42,7 @@ export default function Evaluation({ score, profileData }: IProps) {
           <div className="flex gap-5 items-center">
             <CiWarning className="w-6 h-6 text-brand" />
             <div>
-              {score}점 {findScore(String(score))}
+              {reporterScore ? `${reporterScore}점 ${findScore(reporterScore)}` : "평가 없음"}
             </div>
           </div>
         </div>
@@ -46,8 +55,10 @@ export default function Evaluation({ score, profileData }: IProps) {
               className="border rounded-md p-1 w-full flex-1 disabled:cursor-not-allowed disabled:bg-gray-200"
               {...register("score")}
               onChange={handleChange}
-              disabled={!isAdmin}
+              disabled={!isAdmin || isPending}
+              defaultValue={managerScore || ""}
             >
+              <option value="">평가 선택</option>
               {scores.map((score) => (
                 <option key={score.value} value={score.value}>
                   {score.value}점 {score.text}

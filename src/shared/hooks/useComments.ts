@@ -27,7 +27,7 @@ export const useDeleteComment = (postId: string) => {
 
   return useMutation({
     mutationFn: async (commentId: number) =>
-      await api.delete(`/feedbacks/delete/${commentId}`),
+      await api.delete(`/feedbacks/${commentId}`),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["comments", postId] });
     },

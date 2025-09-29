@@ -1,6 +1,7 @@
 import Button from "../../../shared/layout/Button";
 import LoadingSpinner from "../../../shared/layout/LoadingSpinner";
 import { findDepartment, findPosition } from "../../../shared/config/constants";
+import { useUpdatePermission } from "../../../shared/hooks/useUpdatePermission";
 
 interface ManagerListProps {
   users: any[];
@@ -13,6 +14,15 @@ export default function ManagerList({
   isLoading,
   error,
 }: ManagerListProps) {
+  const { updatePermission, isUpdating } = useUpdatePermission();
+
+  const handleGrantPermission = (userId: number) => {
+    updatePermission({ userId, grantPermission: true });
+  };
+
+  const handleRevokePermission = (userId: number) => {
+    updatePermission({ userId, grantPermission: false });
+  };
   if (isLoading) {
     return <LoadingSpinner />;
   }
@@ -59,8 +69,22 @@ export default function ManagerList({
             <div className="grid grid-cols-3 gap-4 items-center">
               {/* 이름/공종 */}
               <div className="flex items-center space-x-3">
-                <div className="w-10 h-10 bg-gray-200 rounded-full flex items-center justify-center text-lg">
-                  👤
+                <div className="w-10 h-10 bg-gray-200 rounded-full flex items-center justify-center overflow-hidden">
+                  {user.profilePhotoUrl ? (
+                    <img
+                      src={user.profilePhotoUrl}
+                      alt={user.name || "프로필"}
+                      className="w-full h-full object-cover"
+                      onError={(e) => {
+                        const target = e.target as HTMLImageElement;
+                        target.style.display = 'none';
+                        target.nextElementSibling?.classList.remove('hidden');
+                      }}
+                    />
+                  ) : null}
+                  <div className={`w-full h-full flex items-center justify-center text-lg ${user.profilePhotoUrl ? 'hidden' : ''}`}>
+                    👤
+                  </div>
                 </div>
                 <div>
                   <div className="font-medium text-gray-900">
@@ -83,12 +107,27 @@ export default function ManagerList({
 
               {/* 권한 버튼 */}
               <div className="flex justify-center ml-3">
-                <Button
-                  disabled={false}
-                  className="rounded-lg px-8 py-3 text-base font-medium bg-teal-500 hover:bg-teal-600 text-white"
-                >
-                  권한부여
-                </Button>
+                {user.role === 0 ? (
+                  <Button
+                    disabled={isUpdating}
+                    onClick={() => handleGrantPermission(user.userId)}
+                    className="rounded-lg px-8 py-3 text-base font-medium bg-teal-500 hover:bg-teal-600 text-white"
+                  >
+                    {isUpdating ? "처리 중..." : "권한부여"}
+                  </Button>
+                ) : user.role === 1 ? (
+                  <Button
+                    disabled={isUpdating}
+                    onClick={() => handleRevokePermission(user.userId)}
+                    className="rounded-lg px-8 py-3 text-base font-medium bg-red-500 hover:bg-red-600 text-white"
+                  >
+                    {isUpdating ? "처리 중..." : "권한제거"}
+                  </Button>
+                ) : (
+                  <div className="text-sm text-gray-500">
+                    권한 없음
+                  </div>
+                )}
               </div>
             </div>
           </div>

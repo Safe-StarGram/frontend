@@ -29,7 +29,21 @@ export const usePost = () => {
 
   const { data: posts, isLoading } = useQuery<INotification[]>({
     queryKey: ["posts"],
-    queryFn: async () => ((await api.get("notices")).data.content || []),
+    queryFn: async () => {
+      const response = await api.get("/notices", {
+        params: { page: 0, size: 10 } // 최근 10개 게시글 가져오기
+      });
+      
+      // API 응답 구조에 따라 데이터 추출
+      let posts = [];
+      if (response.data.content) {
+        posts = response.data.content;
+      } else if (Array.isArray(response.data)) {
+        posts = response.data;
+      }
+      
+      return posts;
+    },
   });
 
   const uploadMutation = useMutation({

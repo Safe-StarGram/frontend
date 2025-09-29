@@ -6,16 +6,31 @@ export interface IAreaData {
 }
 
 export interface IDetailInfo {
-  isChecked: number;
-  checkerName: string;
-  checkerPosition: number;
-  checkerDepartment: number;
-  isCheckedAt: string;
-  isActionTaken: number;
-  actionTakerName: string;
-  actionTakerPosition: number;
-  actionTakerDepartment: number;
-  isActionTakenAt: string;
+  postId: number;
+  title: string;
+  postPhotoUrl: string;
+  content: string;
+  
+  areaId: number;
+  subAreaId: number;
+  reporterId: number;
+
+  isChecked: string | number;
+  checkerId: string | number | null;
+  checkedAt: string | null;
+
+  isActionTaked: string | number;
+  actionTakerId: string | number | null;
+  actionTakenAt: string | null;
+
+  reporterRiskScore: number;
+  reporterRiskDescription: string;
+
+  reporterRisk: string;
+  managerRisk: string | null;
+
+  createdAt: string;
+  updatedAt: string | null;
 }
 
 export interface IActionForm {

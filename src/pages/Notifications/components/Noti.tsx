@@ -7,6 +7,8 @@ interface IProps {
   title?: string;
   upperArea: number;
   lowerArea: number;
+  upperAreaName?: string;
+  lowerAreaName?: string;
   uploadTime?: string;
   score?: number;
   photoUrl?: string;
@@ -17,6 +19,8 @@ export default function Noti({
   title,
   upperArea,
   lowerArea,
+  upperAreaName,
+  lowerAreaName,
   uploadTime,
   score,
   photoUrl,
@@ -46,7 +50,7 @@ export default function Noti({
         <div className="flex items-center gap-3">
           <IoLocationOutline className="text-blue-500" />
           <span className="text-gray-500">
-            {upperArea}블록 / {lowerArea}동
+            {upperAreaName || `${upperArea}블럭`} / {lowerAreaName || `${lowerArea}동`}
           </span>
         </div>
         <div className="flex items-center gap-3">

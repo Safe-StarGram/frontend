@@ -81,8 +81,11 @@ export default function Detail() {
           <Outline data={detailData} profileData={profileData} />
           <Action postId={postId!} detailInfo={detailData} />
           <Evaluation
-            score={detailData.reporterRisk}
+            reporterScore={detailData.reporterRisk}
+            managerScore={detailData.managerRisk}
             profileData={profileData}
+            postId={postId!}
+            currentData={detailData}
           />
           <CommentContainer postId={postId!} />
 

@@ -4,6 +4,7 @@ import { SyncLoader } from "react-spinners";
 import { changeTimeForm } from "../../shared/hooks/useCurrentTime";
 import { useEffect, useRef } from "react";
 import { useInfinitePost } from "../../shared/hooks/useInfinitePost";
+import { useArea } from "../../shared/hooks/useArea";
 
 export default function Notifications() {
   const {
@@ -14,6 +15,8 @@ export default function Notifications() {
     hasNextPage,
     isFetchingNextPage,
   } = useInfinitePost();
+
+  const { areas } = useArea();
 
 
   // 스크롤이 끝에 도달하면 fetchNextPage를 호출
@@ -65,18 +68,26 @@ export default function Notifications() {
         ) : (
           data?.pages.map((page, index) => (
             <div key={index} className="flex flex-col gap-3">
-              {page.map((noti) => (
-                <Noti
-                  key={noti.postId}
-                  postId={noti.postId}
-                  title={noti.title}
-                  upperArea={noti.areaId}
-                  lowerArea={noti.subAreaId}
-                  uploadTime={noti.createdAt ? changeTimeForm(noti.createdAt) : undefined}
-                  score={noti.reporterRisk ? Number(noti.reporterRisk) : undefined}
-                  photoUrl={noti.postPhotoUrl}
-                />
-              ))}
+              {page.map((noti) => {
+                // 구역 정보 찾기
+                const area = areas?.find(a => a.id === noti.areaId);
+                const subArea = area?.subAreas?.find(sa => sa.subAreaId === noti.subAreaId);
+                
+                return (
+                  <Noti
+                    key={noti.postId}
+                    postId={noti.postId}
+                    title={noti.title}
+                    upperArea={noti.areaId}
+                    lowerArea={noti.subAreaId}
+                    upperAreaName={area?.areaName || `${noti.areaId}블럭`}
+                    lowerAreaName={subArea?.name || `${noti.subAreaId}동`}
+                    uploadTime={noti.createdAt ? changeTimeForm(noti.createdAt) : undefined}
+                    score={noti.managerRisk ? Number(noti.managerRisk) : (noti.reporterRisk ? Number(noti.reporterRisk) : undefined)}
+                    photoUrl={noti.postPhotoUrl}
+                  />
+                );
+              })}
             </div>
           ))
         )}

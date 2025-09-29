@@ -21,7 +21,7 @@ export default function Layout({
     <div className="min-h-screen relative bg-gray-50">
       <Header title={title} showBackButton={showBackButton} />
 
-      <main className="py-4 px-4 flex-1 overflow-auto h-[calc(100vh-10rem)]">
+      <main className="py-4 px-6 md:px-8 lg:px-12 flex-1 overflow-auto h-[calc(100vh-10rem)]">
         {children}
       </main>
 

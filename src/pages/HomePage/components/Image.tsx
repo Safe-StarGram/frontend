@@ -6,9 +6,10 @@ interface IProps {
   title: string;
   createdAt: string;
   id: string;
+  postPhotoUrl?: string;
 }
 
-export default function Image({ title, createdAt, id }: IProps) {
+export default function Image({ title, createdAt, id, postPhotoUrl }: IProps) {
   const navigate = useNavigate();
   const handleClick = () => {
     navigate(`/noti/${id}`);
@@ -20,8 +21,13 @@ export default function Image({ title, createdAt, id }: IProps) {
       onClick={handleClick}
     >
       <img
-        src="https://imagescdn.gettyimagesbank.com/500/202202/jv12533599.jpg"
-        className="w-14 h-14 rounded-md"
+        src={postPhotoUrl || "https://imagescdn.gettyimagesbank.com/500/202202/jv12533599.jpg"}
+        alt={title}
+        className="w-14 h-14 rounded-md object-cover"
+        onError={(e) => {
+          const target = e.target as HTMLImageElement;
+          target.src = "https://imagescdn.gettyimagesbank.com/500/202202/jv12533599.jpg";
+        }}
       />
       <div className="flex flex-col flex-1 justify-between gap-2">
         <div className="font-bold">{title}</div>

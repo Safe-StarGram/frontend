@@ -1,1 +1,68 @@
 @import "tailwindcss";
+@theme {
+  --color-brand: oklch(0.7346 0.1693 41.45);
+}
+
+@layer base {
+  @font-face {
+    font-family: "G-Market-Sans";
+    src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansMedium.woff")
+      format("woff");
+    font-weight: 500;
+    font-display: swap;
+  }
+}
+/* 모바일 앱 최적화 */
+html,
+body {
+  height: 100%;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+
+  margin: auto;
+  max-width: 600px;
+}
+
+body {
+  margin: 0;
+  font-family: "G-Market-Sans", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans",
+    "Helvetica Neue", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #e4e2e2;
+}
+
+/* 터치 인터랙션 최적화 */
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+/* 스크롤바 숨기기 */
+::-webkit-scrollbar {
+  display: none;
+}
+
+/* iOS Safari에서 input zoom 방지 */
+input,
+textarea,
+select {
+  font-size: 16px;
+}
+
+/* 안전 영역 대응 (iPhone X 이상) */
+@supports (padding: max(0px)) {
+  .safe-area-top {
+    padding-top: max(env(safe-area-inset-top), 0px);
+  }
+
+  .safe-area-bottom {
+    padding-bottom: max(env(safe-area-inset-bottom), 0px);
+  }
+}
+
+@theme {
+  --color-brand: oklch(0.7346 0.1693 41.45);
+}

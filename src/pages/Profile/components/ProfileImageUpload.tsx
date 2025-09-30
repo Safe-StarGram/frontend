@@ -2,6 +2,8 @@ import { useState } from "react";
 import { IoCamera } from "react-icons/io5";
 import type { UseFormSetValue } from "react-hook-form";
 import type { IProfileData } from "../types";
+import { compressImageForProfile } from "../../../shared/utils/imageCompression";
+import { toast } from "react-toastify";
 
 interface Props {
   setValue: UseFormSetValue<IProfileData>;
@@ -11,11 +13,26 @@ interface Props {
 export default function ProfileImageUpload({ setValue, defaultImage }: Props) {
   const [preview, setPreview] = useState<string | null>(defaultImage || null);
 
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      setPreview(URL.createObjectURL(file));
-      setValue("image", file);
+      try {
+        // 이미지 압축
+        const compressedFile = await compressImageForProfile(file);
+        
+        setPreview(URL.createObjectURL(compressedFile));
+        setValue("image", compressedFile);
+      } catch (error) {
+        console.error("이미지 압축 실패:", error);
+        toast.error("이미지 압축에 실패했습니다.", {
+          position: "top-center",
+          autoClose: 3000,
+        });
+        
+        // 압축 실패 시 원본 파일 사용
+        setPreview(URL.createObjectURL(file));
+        setValue("image", file);
+      }
     }
   };
 

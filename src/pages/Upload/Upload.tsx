@@ -11,6 +11,7 @@ import { ReportInfo } from "./components/ReportInfo";
 import { FormFields } from "./components/FormFields";
 import { useArea } from "../../features/Areas/useArea";
 import { usePost } from "../../features/Posts/usePost";
+import { compressImageForPost } from "../../shared/utils/imageCompression";
 import { toast } from "react-toastify";
 
 export default function Upload() {
@@ -22,48 +23,94 @@ export default function Upload() {
   const [preview, setPreview] = useState<string | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0] || null;
     if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setPreview(reader.result as string);
-      };
-      reader.readAsDataURL(file);
+      try {
+        // 이미지 압축
+        const compressedFile = await compressImageForPost(file);
+        
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          setPreview(reader.result as string);
+        };
+        reader.readAsDataURL(compressedFile);
+        
+        // 압축된 파일을 form에 설정
+        setValue("image", compressedFile);
+      } catch (error) {
+        console.error("이미지 압축 실패:", error);
+        toast.error("이미지 압축에 실패했습니다.", {
+          position: "top-center",
+          autoClose: 3000,
+        });
+        
+        // 압축 실패 시 원본 파일 사용
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          setPreview(reader.result as string);
+        };
+        reader.readAsDataURL(file);
+        setValue("image", file);
+      }
     }
-    setValue("image", file);
   };
 
-  // Canvas와 이미지를 합치고 base64 문자열로 변환
-  const mergeImageAndCanvas = (): Promise<string | null> => {
+
+  // Canvas와 이미지를 합치고 Blob으로 변환
+  const mergeImageAndCanvas = (): Promise<Blob | null> => {
     const canvasLayer = canvasRef.current;
     
     if (!preview || !canvasLayer) {
       return Promise.resolve(null);
     }
 
-    const displayWidth = canvasLayer.width;
-    const displayHeight = canvasLayer.height;
-
     return new Promise((resolve) => {
       const img = new Image();
       img.src = preview;
       img.onload = () => {
+        // 원본 이미지의 실제 크기 사용
+        const originalWidth = img.naturalWidth;
+        const originalHeight = img.naturalHeight;
+        
         const mergedCanvas = document.createElement("canvas");
-        mergedCanvas.width = displayWidth;
-        mergedCanvas.height = displayHeight;
+        mergedCanvas.width = originalWidth;
+        mergedCanvas.height = originalHeight;
 
         const ctx = mergedCanvas.getContext("2d");
         if (!ctx) {
           return resolve(null);
         }
 
-        // 이미지도 렌더링된 사이즈 기준으로 그리기
-        ctx.drawImage(img, 0, 0, displayWidth, displayHeight);
-        ctx.drawImage(canvasLayer, 0, 0);  // 동일 사이즈니까 그대로 올리기
+        // 원본 이미지를 원본 크기로 그리기
+        ctx.drawImage(img, 0, 0, originalWidth, originalHeight);
+        
+        // 캔버스 레이어의 이미지 표시 정보 가져오기
+        const imageDisplayInfo = (canvasLayer as any).imageDisplayInfo;
+        
+        if (imageDisplayInfo) {
+          // 이미지 표시 영역에 맞게 캔버스 내용을 스케일링하여 그리기
+          const scaleX = originalWidth / imageDisplayInfo.displayWidth;
+          const scaleY = originalHeight / imageDisplayInfo.displayHeight;
+          
+          ctx.save();
+          ctx.scale(scaleX, scaleY);
+          ctx.drawImage(canvasLayer, 0, 0);
+          ctx.restore();
+        } else {
+          // fallback: 기존 방식
+          const scaleX = originalWidth / canvasLayer.width;
+          const scaleY = originalHeight / canvasLayer.height;
+          
+          ctx.save();
+          ctx.scale(scaleX, scaleY);
+          ctx.drawImage(canvasLayer, 0, 0);
+          ctx.restore();
+        }
 
-        const merged = mergedCanvas.toDataURL("image/jpeg", 0.9);
-        resolve(merged);
+        mergedCanvas.toBlob((blob) => {
+          resolve(blob);
+        }, "image/jpeg", 0.9);
       };
       img.onerror = () => {
         resolve(null);
@@ -137,13 +184,11 @@ export default function Upload() {
 
       if (data.image && preview) {
         // Canvas와 이미지를 합친 결과를 사용
-        const mergedImage = await mergeImageAndCanvas();
+        const mergedBlob = await mergeImageAndCanvas();
         
-        if (mergedImage) {
-          // base64를 Blob으로 변환
-          const response = await fetch(mergedImage);
-          const blob = await response.blob();
-          const file = new File([blob], "merged-image.jpg", { type: "image/jpeg" });
+        if (mergedBlob) {
+          // Blob을 File 객체로 변환
+          const file = new File([mergedBlob], "merged-image.jpg", { type: "image/jpeg" });
           uploadData.image = file;
         } else {
           uploadData.image = data.image;

@@ -15,7 +15,7 @@ export default function ImageContainer() {
             <Image
               title={element.title}
               createdAt={element.createdAt}
-              id={element.postId}
+              id={element.postId.toString()}
               postPhotoUrl={element.postPhotoUrl}
               key={index}
             />

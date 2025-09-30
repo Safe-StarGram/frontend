@@ -18,8 +18,8 @@ export default function Outline({ data, profileData }: OutlineProps) {
 
   // subAreaId에 해당하는 이름 찾기
   const subAreaName = area?.subAreas?.find(
-    (sub: { subAreaId: number; name: string }) =>
-      sub.subAreaId === data.subAreaId
+    (sub: { id: number; name: string }) =>
+      sub.id === data.subAreaId
   )?.name;
 
   return (

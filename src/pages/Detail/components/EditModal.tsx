@@ -127,7 +127,7 @@ export default function EditModal({
                   >
                     <option value="">세부 위치를 선택하세요</option>
                     {subAreas.map((subArea) => (
-                      <option key={subArea.subAreaId} value={subArea.subAreaId}>
+                      <option key={subArea.id} value={subArea.id}>
                         {subArea.name}
                       </option>
                     ))}

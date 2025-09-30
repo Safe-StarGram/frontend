@@ -41,18 +41,18 @@ export default function AreaEditForm() {
           <LuMapPin className="w-6 h-6 text-gray-400 mt-3" />
           <div className="flex-1 space-y-3">
             {/* 기존 소구역 목록 */}
-            {subAreas.map((subArea) => (
-              <div key={subArea.subAreaId} className="flex items-center space-x-3">
+            {subAreas.map((subArea, index) => (
+              <div key={`subArea-${subArea.id}-${index}`} className="flex items-center space-x-3">
                 <Input
                   type="text"
                   value={subArea.name}
-                  onChange={(e) => handleSubAreaChange(subArea.subAreaId, e.target.value)}
+                  onChange={(e) => handleSubAreaChange(subArea.id, e.target.value)}
                   className="flex-1"
                   placeholder="소구역 이름을 입력하세요"
                   disabled={isSaving}
                 />
                 <button
-                  onClick={() => removeSubArea(subArea.subAreaId)}
+                  onClick={() => removeSubArea(subArea.id)}
                   disabled={isSaving}
                   className="w-12 h-12 bg-red-500 hover:bg-red-600 disabled:bg-gray-300 disabled:cursor-not-allowed text-white rounded-xl flex items-center justify-center transition-colors"
                   title="소구역 삭제"

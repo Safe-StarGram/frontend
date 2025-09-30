@@ -71,7 +71,7 @@ export default function Notifications() {
               {page.map((noti) => {
                 // 구역 정보 찾기
                 const area = areas?.find(a => a.id === noti.areaId);
-                const subArea = area?.subAreas?.find(sa => sa.subAreaId === noti.subAreaId);
+                const subArea = area?.subAreas?.find(sa => sa.id === noti.subAreaId);
                 
                 return (
                   <Noti

@@ -5,6 +5,8 @@ import { useAreaDetail } from "../../../features/AreaDetail/useAreaDetail";
 import { useUpdateArea } from "../../../features/AreaDetail/useUpdateArea";
 import type { SubArea } from "../../Management/types";
 import LoadingSpinner from "../../../shared/layout/LoadingSpinner";
+import { compressImageForArea } from "../../../shared/utils/imageCompression";
+import { toast } from "react-toastify";
 
 interface AreaDetailContextType {
   // 상태
@@ -70,8 +72,7 @@ export function AreaDetailProvider({ children }: AreaDetailProviderProps) {
       setAreaNameState(area.areaName);
       setSubAreas(area.subAreas || []);
       if (area.imageUrl) {
-        const baseUrl = import.meta.env.VITE_API_BASE_URL;
-        setCurrentImageUrl(`${baseUrl}${area.imageUrl}`);
+        setCurrentImageUrl(area.imageUrl);
       }
     }
   }, [area]);
@@ -103,7 +104,7 @@ export function AreaDetailProvider({ children }: AreaDetailProviderProps) {
   const addSubArea = () => {
     if (newSubAreaName.trim()) {
       const newSubArea: SubArea = {
-        subAreaId: Date.now(), // 임시 ID, 실제로는 서버에서 생성
+        id: Date.now() + Math.random(), // 더 고유한 ID 생성
         name: newSubAreaName.trim(),
       };
       setSubAreas([...subAreas, newSubArea]);
@@ -111,27 +112,46 @@ export function AreaDetailProvider({ children }: AreaDetailProviderProps) {
     }
   };
 
-  const removeSubArea = (subAreaId: number) => {
-    setSubAreas(subAreas.filter((area) => area.subAreaId !== subAreaId));
+  const removeSubArea = (id: number) => {
+    setSubAreas(subAreas.filter((area) => area.id !== id));
   };
 
-  const handleSubAreaChange = (subAreaId: number, name: string) => {
+  const handleSubAreaChange = (id: number, name: string) => {
     setSubAreas(
       subAreas.map((area) =>
-        area.subAreaId === subAreaId ? { ...area, name } : area
+        area.id === id ? { ...area, name } : area
       )
     );
   };
 
-  const handleImageSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageSelect = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
-      setSelectedImage(file);
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        setImagePreview(e.target?.result as string);
-      };
-      reader.readAsDataURL(file);
+      try {
+        // 이미지 압축
+        const compressedFile = await compressImageForArea(file);
+        
+        setSelectedImage(compressedFile);
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          setImagePreview(e.target?.result as string);
+        };
+        reader.readAsDataURL(compressedFile);
+      } catch (error) {
+        console.error("이미지 압축 실패:", error);
+        toast.error("이미지 압축에 실패했습니다.", {
+          position: "top-center",
+          autoClose: 3000,
+        });
+        
+        // 압축 실패 시 원본 파일 사용
+        setSelectedImage(file);
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          setImagePreview(e.target?.result as string);
+        };
+        reader.readAsDataURL(file);
+      }
     }
   };
 

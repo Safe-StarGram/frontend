@@ -1,14 +1,14 @@
-// 서브 구역 데이터 타입
+// 서브 구역 데이터 타입 (실제 API 응답에 맞게 수정)
 export interface SubArea {
-  subAreaId: number;
+  id: number;  // subAreaId가 아니라 id
   name: string;
 }
 
-// 관리구역 데이터 타입 (API 응답에 맞게 수정)
+// 관리구역 데이터 타입 (실제 API 응답에 맞게 수정)
 export interface ManagementArea {
   id: number;
   areaName: string;
-  imageUrl: string | null;
+  imageUrl: string;  // null이 아닌 string으로 수정
   subAreas: SubArea[];
 }
 

@@ -53,7 +53,7 @@ export const usePost = () => {
 
   const uploadMutation = useMutation({
     mutationFn: uploadPost,
-    onSuccess: (data) => {
+    onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["posts"] });
       navigate("/notifications");
     },

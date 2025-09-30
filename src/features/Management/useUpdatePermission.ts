@@ -18,7 +18,7 @@ export const useUpdatePermission = () => {
       });
       return response.data;
     },
-    onSuccess: (data, variables) => {
+    onSuccess: (_, variables) => {
       const action = variables.grantPermission ? "권한부여" : "권한제거";
       toast.success(`${action}가 완료되었습니다!`, {
         position: "top-center",

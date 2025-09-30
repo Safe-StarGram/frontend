@@ -46,14 +46,14 @@ export const useCheckAction = () => {
         
       } else if (actionType === 'managerRisk') {
         // managerRisk 업데이트
-        requestBody.managerRisk = managerRisk;
+        requestBody.managerRisk = managerRisk || null;
         
       }
 
       const response = await api.patch(`/api/admin/notices/${postId}`, requestBody);
       return response.data;
     },
-    onSuccess: (data, variables) => {
+    onSuccess: (_, variables) => {
       let message = "";
       
       if (variables.actionType === 'managerRisk') {
@@ -92,6 +92,7 @@ export const useCheckAction = () => {
   return {
     checkAction: mutation.mutate,
     isProcessing: mutation.isPending,
+    isPending: mutation.isPending,
     error: mutation.error,
     isSuccess: mutation.isSuccess,
   };

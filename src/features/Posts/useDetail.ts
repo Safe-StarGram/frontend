@@ -19,7 +19,7 @@ export const useDetail = (postId: string) => {
       const res = await api.delete(`notices/${id}`);
       return res.data;
     },
-    onSuccess: (data) => {
+    onSuccess: () => {
       toast.success("삭제가 완료되었습니다!", {
         position: "top-center",
         autoClose: 3000,
@@ -29,7 +29,7 @@ export const useDetail = (postId: string) => {
     },
     onError: (error) => {
       console.error("Delete mutation error:", error);
-      toast.error(`삭제 중 오류가 발생했습니다: ${error.response?.status} - ${error.response?.data?.message || error.message}`, {
+      toast.error(`삭제 중 오류가 발생했습니다: ${(error as any).response?.status || 'Unknown'} - ${(error as any).response?.data?.message || error.message}`, {
         position: "top-center",
         autoClose: 5000,
       });

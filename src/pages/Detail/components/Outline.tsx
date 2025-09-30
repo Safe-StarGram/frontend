@@ -3,7 +3,7 @@ import { IoLocationOutline } from "react-icons/io5";
 import type { IProfileData } from "../../Profile/types";
 import { findDepartment, findPosition } from "../../../shared/config/constants";
 import { changeTimeForm } from "../../../shared/hooks/useCurrentTime";
-import { useAreaById } from "../../../shared/hooks/useAreaById";
+import { useAreaById } from "../../../features/Areas/useAreaById";
 import type { IAreaData } from "../types";
 
 interface OutlineProps {

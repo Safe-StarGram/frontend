@@ -1,5 +1,5 @@
 import Summary from "./Summary";
-import { useArea } from "../../../shared/hooks/useArea";
+import { useArea } from "../../../features/Areas/useArea";
 
 export default function SummaryContainer() {
   const { areas, isLoading } = useArea();

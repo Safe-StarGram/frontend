@@ -1,5 +1,5 @@
 import Image from "./Image";
-import { usePost } from "../../../shared/hooks/usePost";
+import { usePost } from "../../../features/Posts/usePost";
 
 export default function ImageContainer() {
   const { posts, isLoading } = usePost();

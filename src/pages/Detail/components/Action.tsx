@@ -3,9 +3,9 @@ import { useSelector } from "react-redux";
 import type { RootState } from "../../../store/store";
 import type { IDetailInfo } from "../types";
 import { changeTimeForm } from "../../../shared/hooks/useCurrentTime";
-import { useCheckAction } from "../../../shared/hooks/useCheckAction";
+import { useCheckAction } from "../../../features/Posts/useCheckAction";
 import { useProfile } from "../../../shared/hooks/useProfile";
-import { useUserById } from "../../../shared/hooks/useUserById";
+import { useUserById } from "../../../features/Management/useUserById";
 import { findDepartment, findPosition } from "../../../shared/config/constants";
 
 interface IProps {

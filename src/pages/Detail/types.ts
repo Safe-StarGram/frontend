@@ -26,7 +26,7 @@ export interface IDetailInfo {
   reporterRiskScore: number;
   reporterRiskDescription: string;
 
-  reporterRisk: string;
+  reporterRisk: number;
   managerRisk: string | null;
 
   createdAt: string;

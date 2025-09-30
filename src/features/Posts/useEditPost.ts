@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import api from "../api/axiosInstance";
+import api from "../../shared/api/axiosInstance";
 import type { IForm } from "../../pages/Detail/types";
 
 export const useEditPost = (postId: string, onClose: () => void) => {

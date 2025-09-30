@@ -3,8 +3,8 @@ import Noti from "./components/Noti";
 import { SyncLoader } from "react-spinners";
 import { changeTimeForm } from "../../shared/hooks/useCurrentTime";
 import { useEffect, useRef } from "react";
-import { useInfinitePost } from "../../shared/hooks/useInfinitePost";
-import { useArea } from "../../shared/hooks/useArea";
+import { useInfinitePost } from "../../features/Posts/useInfinitePost";
+import { useArea } from "../../features/Areas/useArea";
 
 export default function Notifications() {
   const {

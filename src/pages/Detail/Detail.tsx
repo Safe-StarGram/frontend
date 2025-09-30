@@ -14,8 +14,8 @@ import Evaluation from "./components/Evaluation";
 import CommentContainer from "./components/CommentContainer";
 import EditModal from "./components/EditModal";
 import DeleteModal from "./components/DeleteModal";
-import { useArea } from "../../shared/hooks/useArea";
-import { useDetail } from "../../shared/hooks/useDetail";
+import { useArea } from "../../features/Areas/useArea";
+import { useDetail } from "../../features/Posts/useDetail";
 
 export default function Detail() {
   const { postId } = useParams();

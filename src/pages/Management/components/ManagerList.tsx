@@ -1,7 +1,7 @@
 import Button from "../../../shared/layout/Button";
 import LoadingSpinner from "../../../shared/layout/LoadingSpinner";
 import { findDepartment, findPosition } from "../../../shared/config/constants";
-import { useUpdatePermission } from "../../../shared/hooks/useUpdatePermission";
+import { useUpdatePermission } from "../../../features/Management/useUpdatePermission";
 
 interface ManagerListProps {
   users: any[];

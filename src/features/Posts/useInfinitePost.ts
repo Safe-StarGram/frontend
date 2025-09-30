@@ -1,5 +1,5 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
-import api from "../api/axiosInstance";
+import api from "../../shared/api/axiosInstance";
 import type { INotification } from "../../pages/Notifications/types";
 
 const fetchNotifications = async ({

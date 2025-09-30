@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-toastify";
-import api from "../api/axiosInstance";
+import api from "../../shared/api/axiosInstance";
 
 interface UpdatePermissionData {
   userId: number;

@@ -26,7 +26,6 @@ export default function Section() {
     queryFn: async () => (await api.get(`sites/${sectionId}`)).data,
   });
 
-  console.log(data);
 
   return (
     <>
@@ -86,34 +85,29 @@ export default function Section() {
           <div className="grid grid-cols-2 gap-3">
             <div className="flex flex-col items-center justify-center border rounded-md p-4 shadow-sm">
               <FiAlertTriangle className="text-orange-500 w-6 h-6 mb-2" />
-              <div className="text-xl font-bold">12</div>
+              <div className="text-xl font-bold">0</div>
               <div className="text-gray-500 text-sm">신고 건수</div>
             </div>
 
             <div className="flex flex-col items-center justify-center border rounded-md p-4 shadow-sm">
               <BiCheckSquare className="text-green-500 w-6 h-6 mb-2" />
-              <div className="text-xl font-bold">7</div>
+              <div className="text-xl font-bold">0</div>
               <div className="text-gray-500 text-sm">조치 건수</div>
             </div>
 
             <div className="flex flex-col items-center justify-center border rounded-md p-4 shadow-sm">
               <IoIosTimer className="text-blue-500 w-6 h-6 mb-2" />
-              <div className="text-xl font-bold">13 day</div>
+              <div className="text-xl font-bold">0 day</div>
               <div className="text-gray-500 text-sm">무사고 기록</div>
             </div>
 
             <div className="flex flex-col items-center justify-center border rounded-md p-4 shadow-sm">
               <LuClipboardList className="text-purple-500 w-6 h-6 mb-2" />
-              <div className="text-xl font-bold">2</div>
+              <div className="text-xl font-bold">0</div>
               <div className="text-gray-500 text-sm">사고 건수</div>
             </div>
           </div>
 
-          <h3 className="text-2xl font-bold mt-10 mb-5">최근 커멘트</h3>
-          <div>
-            <div>커멘트1</div>
-            <div>커멘트1</div>
-          </div>
         </Layout>
       )}
     </>

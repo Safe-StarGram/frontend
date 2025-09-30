@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-toastify";
-import api from "../api/axiosInstance";
+import api from "../../shared/api/axiosInstance";
 import type { IDetailInfo } from "../../pages/Detail/types";
 
 interface CheckActionData {
@@ -37,15 +37,6 @@ export const useCheckAction = () => {
         requestBody.checkerId = isCurrentlyChecked ? null : userId;
         requestBody.checkedAt = isCurrentlyChecked ? null : currentDate;
         
-        console.log("확인 토글 디버깅:", {
-          isCurrentlyChecked,
-          currentDate,
-          requestBody: {
-            isChecked: requestBody.isChecked,
-            checkerId: requestBody.checkerId,
-            checkedAt: requestBody.checkedAt
-          }
-        });
       } else if (actionType === 'action') {
         // 이미 조치된 상태라면 비활성화, 아니면 활성화
         const isCurrentlyActionTaken = Number(currentData.isActionTaked) === 1;
@@ -53,30 +44,13 @@ export const useCheckAction = () => {
         requestBody.actionTakerId = isCurrentlyActionTaken ? null : userId;
         requestBody.actionTakenAt = isCurrentlyActionTaken ? null : currentDate;
         
-        console.log("조치 토글 디버깅:", {
-          isCurrentlyActionTaken,
-          currentDate,
-          requestBody: {
-            isActionTaked: requestBody.isActionTaked,
-            actionTakerId: requestBody.actionTakerId,
-            actionTakenAt: requestBody.actionTakenAt
-          }
-        });
       } else if (actionType === 'managerRisk') {
         // managerRisk 업데이트
         requestBody.managerRisk = managerRisk;
         
-        console.log("managerRisk 업데이트 디버깅:", {
-          managerRisk,
-          requestBody: {
-            managerRisk: requestBody.managerRisk
-          }
-        });
       }
 
-      console.log("API 요청 바디:", requestBody);
       const response = await api.patch(`/api/admin/notices/${postId}`, requestBody);
-      console.log("API 응답:", response.data);
       return response.data;
     },
     onSuccess: (data, variables) => {

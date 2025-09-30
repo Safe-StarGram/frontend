@@ -1,6 +1,6 @@
 import { useForm } from "react-hook-form";
 import { LuSend } from "react-icons/lu";
-import { useAddComment } from "../../../shared/hooks/useComments";
+import { useAddComment } from "../../../features/Comments/useComments";
 
 interface IProps {
   postId: string;

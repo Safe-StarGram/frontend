@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import api from "../api/axiosInstance";
+import api from "../../shared/api/axiosInstance";
 import type { IAreaData } from "../../pages/Detail/types";
 
 export const useAreaById = (data: IAreaData) => {

@@ -6,7 +6,7 @@ import { compareTime } from "../../../shared/hooks/useCurrentTime";
 import {
   useDeleteComment,
   useEditComment,
-} from "../../../shared/hooks/useComments";
+} from "../../../features/Comments/useComments";
 
 interface IProps {
   userId: number;

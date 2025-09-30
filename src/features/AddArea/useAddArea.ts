@@ -38,7 +38,6 @@ export function useAddArea() {
           "Content-Type": "multipart/form-data",
         },
       });
-      console.log(data);
       return res.data;
     },
     onSuccess: () => {

@@ -1,7 +1,7 @@
 import Comment from "./Comment";
 import AddComment from "./AddComment";
 import type { IComment } from "../types";
-import { useComments } from "../../../shared/hooks/useComments";
+import { useComments } from "../../../features/Comments/useComments";
 
 interface IProps {
   postId: string;

@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import type { RootState } from "../../../store/store";
 import type { IProfileData } from "../../Profile/types";
 import { findScore, scores } from "../../../shared/config/constants";
-import { useCheckAction } from "../../../shared/hooks/useCheckAction";
+import { useCheckAction } from "../../../features/Posts/useCheckAction";
 
 interface IProps {
   reporterScore: string | null;

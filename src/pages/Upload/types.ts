@@ -25,6 +25,6 @@ export interface IArea {
 }
 
 export interface ISubArea {
-  subAreaId: number;
+  id: number;
   name: string;
 }

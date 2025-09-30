@@ -52,7 +52,7 @@ export const LocationSelector = ({ register, watch, areas, errors }: IProps) => 
           {areas
             ?.find((area) => String(area.id) === selectedUpperArea)
             ?.subAreas.map((subArea) => (
-              <option key={subArea.subAreaId} value={subArea.subAreaId}>
+              <option key={subArea.id} value={subArea.id}>
                 {subArea.name}
               </option>
             ))}

@@ -77,9 +77,9 @@ export default function AreaList({ areas, isLoading, error }: AreaListProps) {
                   서브 구역: {area.subAreas.length}개
                 </p>
                 <div className="flex flex-wrap gap-1">
-                  {area.subAreas.slice(0, 3).map((subArea) => (
+                  {area.subAreas.slice(0, 3).map((subArea, index) => (
                     <span
-                      key={subArea.subAreaId}
+                      key={`subArea-${area.id}-${subArea.id}-${index}`}
                       className="text-xs bg-gray-100 text-gray-700 px-2 py-1 rounded-full"
                     >
                       {subArea.name}

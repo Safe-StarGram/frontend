@@ -58,7 +58,7 @@ export interface Area {
 }
 
 export interface SubArea {
-  subAreaId: number;
+  id: number;
   name: string;
 }
 

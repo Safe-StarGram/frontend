@@ -1,5 +1,4 @@
 import { LuCirclePlus } from "react-icons/lu";
-import { useRef } from "react";
 import { CanvasPainting } from "../../../features/CanvasPainting";
 
 interface ImageUploaderProps {
@@ -13,7 +12,6 @@ export const ImageUploader = ({
   onFileChange,
   onCanvasChange,
 }: ImageUploaderProps) => {
-  const clearCanvasRef = useRef<(() => void) | null>(null);
 
   return (
     <div className="w-full flex flex-col items-center">

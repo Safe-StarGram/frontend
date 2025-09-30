@@ -1,6 +1,8 @@
 import { createContext, useContext, useState } from "react";
 import type { ReactNode } from "react";
 import { useAddArea } from "../../../features/AddArea/useAddArea";
+import { compressImageForArea } from "../../../shared/utils/imageCompression";
+import { toast } from "react-toastify";
 
 interface SubArea {
   id: number;
@@ -66,15 +68,34 @@ export function AddAreaProvider({ children }: AddAreaProviderProps) {
     ));
   };
 
-  const handleImageSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageSelect = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
-      setSelectedImage(file);
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        setImagePreview(e.target?.result as string);
-      };
-      reader.readAsDataURL(file);
+      try {
+        // 이미지 압축
+        const compressedFile = await compressImageForArea(file);
+        
+        setSelectedImage(compressedFile);
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          setImagePreview(e.target?.result as string);
+        };
+        reader.readAsDataURL(compressedFile);
+      } catch (error) {
+        console.error("이미지 압축 실패:", error);
+        toast.error("이미지 압축에 실패했습니다.", {
+          position: "top-center",
+          autoClose: 3000,
+        });
+        
+        // 압축 실패 시 원본 파일 사용
+        setSelectedImage(file);
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          setImagePreview(e.target?.result as string);
+        };
+        reader.readAsDataURL(file);
+      }
     }
   };
 
